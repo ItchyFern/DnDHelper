@@ -374,7 +374,7 @@
       "HP": "9",
       "Deity": "Tempus",
       "Weapon1": "Ranseur",
-      "Weapon1AB": "+2 on disarm",
+      "Weapon1AB": "",
       "Weapon1Damage": "2d4",
       "Weapon1Crit": "x3",
       "Weapon1Range": "10",
