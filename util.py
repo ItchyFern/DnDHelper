@@ -170,6 +170,7 @@ def run():
     with open("Seth's Marshal-2019-12-19.json", "r") as readfile:
         data = json.load(readfile)
 
+
     # grab only the important data for this program
     data = data["sheet_data"]["jsondata"]
 
