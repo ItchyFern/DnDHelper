@@ -45,9 +45,11 @@ class Window():
 
 
     def attack(self):
+        print ("roll for", "attack")
         pyperclip.copy(util.attack(self.data, self.preferences["weapon"]))
 
     def hit(self):
+        print ("roll for", "hit")
         pyperclip.copy(util.hit(self.data, self.preferences["weapon"]))
 
     def skill(self):
@@ -80,6 +82,39 @@ class Window():
 
         def set(weap):
             self.preferences["weapon"] = weap
+            selectdialog.destroy()
+
+    def skill(self):
+        #initialize dialog box and title
+        selectdialog = tk.Toplevel()
+        selectdialog.title("Choose a skill")
+
+        #initialize skill choices
+        si = util.getSkillInfo(self.data)
+        print (si)
+        print("looking at skills")
+
+        #initialize row counter
+        count = 8
+        container = tk.Frame(selectdialog)
+        for skill in si:
+            if count > 7:
+                count = 0
+                f = tk.Frame(container)
+                f.pack(side = "left")
+            tk.Button(f, text = skill,
+                         command = lambda s = skill: skillcheck(s)).pack(fill="x")
+
+            count+=1
+
+        container.pack(fill="x")
+
+
+
+
+        def skillcheck(s):
+            print("roll for skill:", s)
+            pyperclip.copy(util.skillcheck(self.data, s))
             selectdialog.destroy()
 
     def save(self):
@@ -134,19 +169,11 @@ class Window():
         self.skibutton = tk.Button(self.optionsframe,
                                    text = "Skill Check",
                                    command = lambda:self.skill())
-        self.equbutton = tk.Button(self.optionsframe,
-                                   text = "Equip",
-                                   command = lambda:self.equip())
-        self.savbutton = tk.Button(self.optionsframe,
-                                   text = "Save",
-                                   command = lambda:self.save())
 
         #pack all the Buttons
         self.attbutton.pack(fill="x")
         self.hitbutton.pack(fill="x")
         self.skibutton.pack(fill="x")
-        self.equbutton.pack(fill="x")
-        self.savbutton.pack(fill="x")
 
         #check preferences file
         self.loadPreferences()

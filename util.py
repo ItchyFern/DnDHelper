@@ -148,19 +148,17 @@ def hit(data, weapon):
         string += " + {}".format(int(mod) + int(regex.group(3)))
     return string
 
-def skillcheck(data):
-    for x in range (2):
-        uc = input ("skill -> ")
-        str = "/r 1d20 "
-        if uc == "":
-            for skill in getSkillInfo(data):
-                print (skill)
-        else:
-            for skill in getSkillInfo(data):
-                if uc.lower() in skill.lower():
-                    str += "+ {}".format(getSkillInfo(data)[skill]["Mod"])
-                    break
-            return str
+def skillcheck(data, s):
+    str = "/r 1d20 "
+    if s == "":
+        for skill in getSkillInfo(data):
+            print (skill)
+    else:
+        for skill in getSkillInfo(data):
+            if s.lower() in skill.lower():
+                str += "+ {}".format(getSkillInfo(data)[skill]["Mod"])
+                break
+        return str
 
 def save(data):
     pass
