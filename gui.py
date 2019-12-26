@@ -47,6 +47,12 @@ class Window():
     def attack(self):
         pyperclip.copy(util.attack(self.data, self.preferences["weapon"]))
 
+    def hit(self):
+        pyperclip.copy(util.hit(self.data, self.preferences["weapon"]))
+
+    def skill(self):
+        pass
+
     def equip(self):
         #initialize dialog box and title
         selectdialog = tk.Toplevel()
