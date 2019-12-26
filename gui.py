@@ -13,13 +13,16 @@ class Window():
 
     def loadPreferences(self):
         try:
+            #print("entered preference loading")
             with open(".preferences", "r") as readfile:
+                #print ("opened file for preferences")
                 for line in readfile.readlines():
-                    regex = re.search("(\w*)\s*=\s*\"?([\w\s]*\"?)")
-                    self.preferences[regex.group(1), regex.group(2)]
+                    regex = re.search("(\w*)\s*=\s*\"(.*?)\"", line)
+                    print (regex.group(1), "=", regex.group(2))
+                    self.preferences[regex.group(1)] = regex.group(2)
 
-        except:
-            print("failed to load preferences")
+        except Exception as e:
+            print("failed to load preferences:", e)
 
     def openData(self):
         datafile = askopenfilename(filetypes=(("Character Files", "*.json"),
@@ -63,22 +66,23 @@ class Window():
                     info.append("N/A")
 
             tk.Button(selectdialog,
-                      text = "{:>20} | {:5} | {:8} | {:9}".format(name,
+                      text = "{:>20} | {:20} | {:8} | {:9}".format(name,
                                                                   info[0],
                                                                   info[1],
                                                                   info[2]),
-                      command = lambda: set(weapon)).pack(fill="x")
+                      command = lambda w = weapon: set(w)).pack(fill="x")
 
         def set(weap):
             self.preferences["weapon"] = weap
             selectdialog.destroy()
 
     def save(self):
-        with open(.preferences, "r+") as f:
+        with open(".preferences", "r+") as f:
             data = f.read()
             f.seek(0)
             for key in self.preferences:
-                f.write("{} = \"{}\"".format(key, self.preferences[key]))
+                print ("{} = \"{}\"\n".format(key, self.preferences[key]))
+                f.write("{} = \"{}\"\n".format(key, self.preferences[key]))
             f.truncate()
         print ("saved successfully")
 
@@ -124,7 +128,8 @@ class Window():
         datafile = ""
         try:
             #check if there is a data preference in preference file
-            datafile = self.preferences["data"]
+            if self.preferences["data"] != "":
+                datafile = self.preferences["data"]
         except:
             # if nothing in preferences file ask to open json file
             print("datafile not found in preferences")
