@@ -28,7 +28,7 @@ class Window():
         datafile = askopenfilename(filetypes=(("Character Files", "*.json"),
                                                   ("All files", "*.*") ))
         print (datafile, " <- location selected")
-        return datafile
+        self.preferences["data"] = datafile
 
     def loadData(self, datafile):
         try:
@@ -97,6 +97,26 @@ class Window():
         self.data = ""
         self.preferences = {}
 
+        # initialize and pack menu
+        self.menubar = tk.Menu(self.window)
+        self.optionsmenu = tk.Menu(self.menubar, tearoff = 0)
+        self.optionsmenu.add_command(label = "Open",
+                                     command = lambda: self.openData())
+        self.optionsmenu.add_command(label = "Equip",
+                                     command = lambda: self.equip())
+        self.optionsmenu.add_command(label = "Save",
+                                     command = lambda: self.save())
+
+        self.optionsmenu.add_separator()
+
+        self.optionsmenu.add_command(label="Exit",
+                                     command= lambda: self.save())
+
+        self.menubar.add_cascade(label="Options",
+                                 menu=self.optionsmenu)
+
+        self.window.config(menu = self.menubar)
+
         #initialize and pack frames
         self.titleframe = tk.Frame(self.window)
         self.titleframe.pack()
@@ -139,7 +159,8 @@ class Window():
         except:
             # if nothing in preferences file ask to open json file
             print("datafile not found in preferences")
-            self.preferences["data"] = self.openData()
+            self.openData()
+
 
         #load datafile
         self.loadData(self.preferences["data"])
